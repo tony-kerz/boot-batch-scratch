@@ -1,0 +1,45 @@
+buildscript {
+  ext {
+    springBootVersion = '1.4.0.M3'
+  }
+  repositories {
+    mavenCentral()
+    maven { url 'http://repo.spring.io/milestone' }
+  }
+  dependencies {
+    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+  }
+}
+
+ext {
+  orientVersion = '2.2.0'
+}
+
+group 'com.kerz'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+apply plugin: 'spring-boot'
+
+repositories {
+  mavenCentral()
+  maven { url 'http://repo.spring.io/milestone' }
+}
+
+dependencies {
+  compile 'org.springframework.boot:spring-boot-starter-batch'
+  compile 'org.codehaus.groovy:groovy-all:2.4.3'
+  compile 'org.hsqldb:hsqldb'
+  compile 'org.apache.commons:commons-lang3:3.4'
+  compile 'com.tinkerpop.gremlin:gremlin-groovy:2.6.0'
+  compile 'org.codehaus.groovy:groovy-jsr223:2.4.6'
+  compile "com.orientechnologies:orientdb-client:$orientVersion"
+  //compile "com.orientechnologies:orientdb-enterprise:$orientVersion"
+  compile "com.orientechnologies:orientdb-graphdb:$orientVersion"
+  testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.13'
+}
