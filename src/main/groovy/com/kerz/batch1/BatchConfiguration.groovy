@@ -1,8 +1,5 @@
 package com.kerz.batch1
 
-import com.kerz.batch1.batch.JobCompletionNotificationListener
-import com.kerz.batch1.batch.PersonItemProcessor
-import com.kerz.batch1.domain.Person
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.JobExecutionListener
 import org.springframework.batch.core.Step
@@ -11,19 +8,17 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory
 import org.springframework.batch.core.launch.support.RunIdIncrementer
 import org.springframework.batch.item.ItemProcessor
-import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider
-import org.springframework.batch.item.database.JdbcBatchItemWriter
-import org.springframework.batch.item.file.FlatFileItemReader
-import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper
-import org.springframework.batch.item.file.mapping.DefaultLineMapper
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer
+import org.springframework.batch.item.data.RepositoryItemReader
+import org.springframework.batch.item.data.RepositoryItemWriter
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.core.io.ClassPathResource
-import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.data.domain.Sort
 
-import javax.sql.DataSource
+import com.kerz.batch1.batch.JobCompletionNotificationListener
+import com.kerz.batch1.batch.PersonItemProcessor
+import com.kerz.batch1.dao.PersonRepository
+import com.kerz.batch1.domain.Person
 
 @Configuration
 @EnableBatchProcessing
@@ -34,42 +29,36 @@ public class BatchConfiguration {
 
   @Autowired
   public StepBuilderFactory stepBuilderFactory
-
+  
   @Autowired
-  public DataSource dataSource
-
+  private PersonRepository personRepository
+  
   @Bean
-  public FlatFileItemReader<Person> reader() {
-    FlatFileItemReader<Person> reader = new FlatFileItemReader<Person>()
-    reader.setResource(new ClassPathResource('sample-data.csv'))
-    reader.setLineMapper(new DefaultLineMapper<Person>() {{
-      setLineTokenizer(new DelimitedLineTokenizer() {{
-        setNames(['firstName', 'lastName'] as String[])
-      }})
-      setFieldSetMapper(new BeanWrapperFieldSetMapper<Person>() {{
-        setTargetType(Person.class)
-      }})
-    }})
+  public def reader() {
+    def reader = new RepositoryItemReader<Person>()
+    reader.pageSize = 5
+    reader.repository = personRepository
+    reader.methodName = 'findAll'
+    reader.sort = [lastName: Sort.Direction.ASC]
     reader
   }
-
+  
   @Bean
   public PersonItemProcessor processor() {
     new PersonItemProcessor()
   }
-
+  
   @Bean
-  public JdbcBatchItemWriter<Person> writer() {
-    JdbcBatchItemWriter<Person> writer = new JdbcBatchItemWriter<Person>()
-    writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Person>())
-    writer.setSql('INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)')
-    writer.setDataSource(dataSource)
+  def writer() {
+    def writer = new RepositoryItemWriter<Person>()
+    writer.repository = personRepository
+    writer.methodName = 'save'
     writer
   }
-
+  
   @Bean
   public JobExecutionListener listener() {
-    new JobCompletionNotificationListener(new JdbcTemplate(dataSource))
+    new JobCompletionNotificationListener()
   }
 
   @Bean

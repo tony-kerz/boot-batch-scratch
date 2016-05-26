@@ -1,22 +1,25 @@
 package com.kerz.batch1.batch
 
-import com.kerz.batch1.domain.Person
+import org.apache.http.client.HttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.batch.item.ItemProcessor
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.util.Assert
+
+import com.kerz.batch1.domain.Person
 
 public class PersonItemProcessor implements ItemProcessor<Person, Person>{
-  private static final Logger log = LoggerFactory.getLogger(PersonItemProcessor)
+  static Logger log = LoggerFactory.getLogger(PersonItemProcessor)
 
+  @Autowired
+  HttpClient httpClient
+  
   @Override
-  public Person process(final Person person) throws Exception {
-    final String firstName = person.getFirstName().toUpperCase()
-    final String lastName = person.getLastName().toUpperCase()
-
-    final Person transformedPerson = new Person(firstName: firstName, lastName: lastName)
-
-    log.info("Converting (${person}) into (${transformedPerson})")
-
-    transformedPerson
+  public Person process(Person person) throws Exception {
+    // https://search.mapzen.com/v1/search?text=06108&api_key=search-ND7BVJ&boundary.country=USA&size=1
+    Assert.notNull(httpClient)
+    log.info("process: last-name=$person.lastName")
+    person
   }
 }

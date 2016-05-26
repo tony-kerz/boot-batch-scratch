@@ -20,15 +20,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.kerz.jbatch1.batch.JavaJobCompletionNotificationListener;
-import com.kerz.jbatch1.batch.JavaPersonItemProcessor;
-import com.kerz.jbatch1.domain.JavaPerson;
+import com.kerz.jbatch1.batch.JobCompletionNotificationListener;
+import com.kerz.jbatch1.batch.PersonItemProcessor;
+import com.kerz.jbatch1.domain.Person;
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableBatchProcessing
-public class JavaBatchConfiguration {
+public class BatchConfiguration {
 
   @Autowired
   public JobBuilderFactory jobBuilderFactory;
@@ -41,29 +41,29 @@ public class JavaBatchConfiguration {
 
   // tag::readerwriterprocessor[]
   @Bean
-  public FlatFileItemReader<JavaPerson> reader() {
-    FlatFileItemReader<JavaPerson> reader = new FlatFileItemReader<JavaPerson>();
+  public FlatFileItemReader<Person> reader() {
+    FlatFileItemReader<Person> reader = new FlatFileItemReader<Person>();
     reader.setResource(new ClassPathResource("sample-data.csv"));
-    reader.setLineMapper(new DefaultLineMapper<JavaPerson>() {{
+    reader.setLineMapper(new DefaultLineMapper<Person>() {{
       setLineTokenizer(new DelimitedLineTokenizer() {{
         setNames(new String[] { "firstName", "lastName" });
       }});
-      setFieldSetMapper(new BeanWrapperFieldSetMapper<JavaPerson>() {{
-        setTargetType(JavaPerson.class);
+      setFieldSetMapper(new BeanWrapperFieldSetMapper<Person>() {{
+        setTargetType(Person.class);
       }});
     }});
     return reader;
   }
 
   @Bean
-  public JavaPersonItemProcessor processor() {
-    return new JavaPersonItemProcessor();
+  public PersonItemProcessor processor() {
+    return new PersonItemProcessor();
   }
 
   @Bean
-  public JdbcBatchItemWriter<JavaPerson> writer() {
-    JdbcBatchItemWriter<JavaPerson> writer = new JdbcBatchItemWriter<JavaPerson>();
-    writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<JavaPerson>());
+  public JdbcBatchItemWriter<Person> writer() {
+    JdbcBatchItemWriter<Person> writer = new JdbcBatchItemWriter<Person>();
+    writer.setItemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<Person>());
     writer.setSql("INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)");
     writer.setDataSource(dataSource);
     return writer;
@@ -74,7 +74,7 @@ public class JavaBatchConfiguration {
 
   @Bean
   public JobExecutionListener listener() {
-    return new JavaJobCompletionNotificationListener(new JdbcTemplate(dataSource));
+    return new JobCompletionNotificationListener(new JdbcTemplate(dataSource));
   }
 
   // end::listener[]
@@ -93,9 +93,9 @@ public class JavaBatchConfiguration {
   @Bean
   public Step step1() {
     return stepBuilderFactory.get("step1")
-        .<JavaPerson, JavaPerson> chunk(10)
+        .<Person, Person> chunk(10)
         .reader(reader())
-        .processor((ItemProcessor<JavaPerson,JavaPerson>)processor())
+        .processor((ItemProcessor<Person,Person>)processor())
         .writer(writer())
         .build();
   }
