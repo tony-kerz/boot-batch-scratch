@@ -9,20 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import com.kerz.jbatch1.domain.JavaPerson;
+import com.kerz.jbatch1.domain.Person;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class JavaJobCompletionNotificationListener extends JobExecutionListenerSupport {
+public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
 
-  private static final Logger log = LoggerFactory.getLogger(JavaJobCompletionNotificationListener.class);
+  private static final Logger log = LoggerFactory.getLogger(JobCompletionNotificationListener.class);
 
   private final JdbcTemplate jdbcTemplate;
 
   @Autowired
-  public JavaJobCompletionNotificationListener(JdbcTemplate jdbcTemplate) {
+  public JobCompletionNotificationListener(JdbcTemplate jdbcTemplate) {
     this.jdbcTemplate = jdbcTemplate;
   }
 
@@ -31,14 +31,17 @@ public class JavaJobCompletionNotificationListener extends JobExecutionListenerS
     if(jobExecution.getStatus() == BatchStatus.COMPLETED) {
       log.info("!!! JOB FINISHED! Time to verify the results");
 
-      List<JavaPerson> results = jdbcTemplate.query("SELECT first_name, last_name FROM people", new RowMapper<JavaPerson>() {
+      List<Person> results = jdbcTemplate.query("SELECT first_name, last_name FROM people", new RowMapper<Person>() {
         @Override
-        public JavaPerson mapRow(ResultSet rs, int row) throws SQLException {
-          return new JavaPerson(rs.getString(1), rs.getString(2));
+        public Person mapRow(ResultSet rs, int row) throws SQLException {
+          Person person = new Person();
+          person.setFirstName(rs.getString(1));
+          person.setLastName(rs.getString(2));
+          return person;
         }
       });
 
-      for (JavaPerson person : results) {
+      for (Person person : results) {
         log.info("Found <" + person + "> in the database.");
       }
 
