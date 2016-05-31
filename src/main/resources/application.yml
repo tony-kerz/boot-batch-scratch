@@ -1,5 +1,18 @@
 logging:
   level:
-    org.springframework: DEBUG
-    com.kerz: DEBUG
-    com.orientechnologies: DEBUG
+    ROOT: INFO
+    org.springframework: INFO
+    com.orientechnologies: INFO
+    com.kerz: INFO    
+
+orient:
+  host: 192.168.99.100
+  user: root
+  password: s3cret
+  db: test-graph-1
+  
+geocoder:
+  clazz: com.kerz.geo.mapzen.MapzenGeocoder
+  uri: https://search.mapzen.com/v1/search
+  key: search-ND7BVJ
+  country: USA

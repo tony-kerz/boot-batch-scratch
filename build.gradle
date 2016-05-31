@@ -13,7 +13,7 @@ buildscript {
 }
 
 group 'com.kerz'
-version '1.0-SNAPSHOT'
+version '1.0.0-SNAPSHOT'
 
 apply plugin: 'groovy'
 apply plugin: 'java'
@@ -26,10 +26,10 @@ repositories {
 }
 
 ext {
-  springDataVersion = '1.12.1.RELEASE'
-  orientVersion = '2.2.0'
-  orientDataVersion = '0.10.0-SNAPSHOT'
-  httpClientVersion = '4.5.2'
+  //springDataVersion = '1.12.1.RELEASE'
+  //orientVersion = '2.2.0'
+  //orientDataVersion = '0.10.0-SNAPSHOT'
+  //httpClientVersion = '4.5.2'
   springBatchVersion = '3.0.7.RELEASE'
 }
 
@@ -37,15 +37,22 @@ dependencies {
   compile "org.springframework.boot:spring-boot-starter-batch:${springBootVersion}"
   compile 'org.codehaus.groovy:groovy-all:2.4.3'
   compile 'org.hsqldb:hsqldb'
-  compile 'org.apache.commons:commons-lang3:3.4'
-  compile 'com.tinkerpop.gremlin:gremlin-groovy:2.6.0'
+  //compile 'org.apache.commons:commons-lang3:3.4'
   compile 'org.codehaus.groovy:groovy-jsr223:2.4.6'
-  compile "com.orientechnologies:orientdb-client:$orientVersion"
-  //compile "com.orientechnologies:orientdb-enterprise:$orientVersion"
-  compile "com.orientechnologies:orientdb-graphdb:$orientVersion"
-  compile "org.springframework.data:spring-data-orientdb-commons:$orientDataVersion"
-  compile "org.springframework.data:spring-data-orientdb-object:$orientDataVersion"
-  compile "org.apache.httpcomponents:httpclient:$httpClientVersion"
+  //compile "org.springframework.data:spring-data-orientdb-commons:$orientDataVersion"
+  //compile "org.springframework.data:spring-data-orientdb-graph:$orientDataVersion"
+  //compile "org.springframework.data:spring-data-orientdb-object:$orientDataVersion"
+  //compile "org.apache.httpcomponents:httpclient:$httpClientVersion"
+  //compile 'org.hibernate:hibernate-validator:5.2.4.Final'
+  compile 'com.kerz:kerz-geo:1.0.0-SNAPSHOT'
+  
+  compile 'com.kerz:kerz-orient:1.0.0-SNAPSHOT'
+  // issue linking this, so including directly for work-around
+//  compile 'com.tinkerpop.gremlin:gremlin-groovy:2.6.0'
+//  compile "com.orientechnologies:orientdb-client:$orientVersion"
+//  compile "com.orientechnologies:orientdb-graphdb:$orientVersion"
+//  compile 'org.springframework.data:spring-data-commons:1.12.1.RELEASE'
+  
   testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
   testCompile "org.springframework.batch:spring-batch-test:${springBatchVersion}"
 }
