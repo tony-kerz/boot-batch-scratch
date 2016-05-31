@@ -66,13 +66,14 @@ class BatchTest {
       log.debug("set-up: idx=$idx, address=$it")
       personRepository.save(new Person(firstName: "first-name-$idx", lastName: "last-name-$idx", address: it))
     }
+    oHelper.g.commit()
   }
 
   @After
   void tearDown() {
     log.info('tear-down')
     //personRepository.deleteAll()
-    oHelper.g.commit()
+    //oHelper.g.commit()
   }
 
   @Test
