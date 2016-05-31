@@ -14,7 +14,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration
 import org.springframework.core.env.Environment
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 
-import com.kerz.batch1.dao.PersonRepository
+import com.kerz.batch1.dao.PersonSqlRepository
 import com.kerz.batch1.domain.Person
 import com.kerz.geo.HttpClientGeocoderConfiguration
 import com.kerz.orient.OrientHelper
@@ -24,7 +24,7 @@ import com.kerz.orient.OrientRepositoryConfiguration
 // http://stackoverflow.com/a/27396456/2371903
 @SpringApplicationConfiguration(classes = [
   OrientRepositoryConfiguration,
-  PersonRepository,
+  PersonSqlRepository,
   HttpClientConfiguration,  
   HttpClientGeocoderConfiguration,
   BatchConfiguration, 
@@ -42,7 +42,7 @@ class BatchTest {
   JobLauncherTestUtils jobLauncherTestUtils
   
   @Autowired
-  PersonRepository personRepository
+  PersonSqlRepository personRepository
   
   @Autowired
   OrientHelper oHelper

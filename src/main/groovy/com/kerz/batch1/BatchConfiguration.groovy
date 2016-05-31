@@ -1,7 +1,5 @@
 package com.kerz.batch1
 
-import javax.annotation.Resource
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.batch.core.Job
@@ -16,14 +14,13 @@ import org.springframework.batch.item.ItemProcessor
 import org.springframework.batch.item.data.RepositoryItemReader
 import org.springframework.batch.item.data.RepositoryItemWriter
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.Sort
 
 import com.kerz.batch1.batch.JobCompletionNotificationListener
 import com.kerz.batch1.batch.PersonItemProcessor
-import com.kerz.batch1.dao.PersonRepository
+import com.kerz.batch1.dao.PersonSqlRepository
 import com.kerz.batch1.domain.Person
 import com.kerz.orient.tx.OrientTransactionManager
 
@@ -38,7 +35,7 @@ public class BatchConfiguration {
   JobBuilderFactory jobBuilderFactory
 
   @Autowired
-  PersonRepository personRepository
+  PersonSqlRepository personRepository
   
   @Autowired
   JobRepository jobRepository
