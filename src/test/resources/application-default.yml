@@ -1,0 +1,12 @@
+logging:
+  level:
+    ROOT: INFO
+    org.springframework.batch: DEBUG
+    com.orientechnologies: DEBUG
+    com.kerz: DEBUG
+
+orient:
+  host: 192.168.99.100
+  user: root
+  password: s3cret
+  db: test-graph-1

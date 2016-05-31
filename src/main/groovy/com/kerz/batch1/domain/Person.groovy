@@ -1,34 +1,14 @@
 package com.kerz.batch1.domain
 
-import javax.persistence.Id
-import javax.persistence.Version
+import groovy.transform.EqualsAndHashCode
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder
+import com.kerz.orient.domain.GElement
+import com.kerz.orient.domain.OPoint
 
-public class Person {
-
-  @Id
-  String id
-  
-  @Version
-  Long version
-  
-  /**
-   * Added to avoid a runtime error whereby the detachAll property is checked
-   * for existence but not actually used.
-   */
-  String detachAll
-  
-  String lastName
+@EqualsAndHashCode
+class Person extends GElement {
   String firstName
-  
-  Integer age
+  String lastName
   String address
-  Float lat
-  Float lon
-
-  @Override
-  public String toString() {
-    return ReflectionToStringBuilder.toString(this)
-  }
+  OPoint point
 }

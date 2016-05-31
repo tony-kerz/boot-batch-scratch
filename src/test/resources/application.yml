@@ -1,5 +1,0 @@
-logging:
-  level:
-    org.springframework: DEBUG
-    com.kerz: DEBUG
-    com.orientechnologies: DEBUG

@@ -12,13 +12,13 @@ import com.kerz.batch1.dao.PersonRepository
 
 public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
 
-  private static final Logger log = LoggerFactory.getLogger(JobCompletionNotificationListener)
+  static final Logger log = LoggerFactory.getLogger(JobCompletionNotificationListener)
 
   @Autowired
-  private PersonRepository personRepository
+  PersonRepository personRepository
   
   @Override
-  public void afterJob(JobExecution jobExecution) {
+  void afterJob(JobExecution jobExecution) {
     if(jobExecution.getStatus() == BatchStatus.COMPLETED) {
       log.info('!!! JOB FINISHED! Time to verify the results')
 
