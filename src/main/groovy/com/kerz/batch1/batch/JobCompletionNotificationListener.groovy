@@ -8,14 +8,14 @@ import org.springframework.batch.core.listener.JobExecutionListenerSupport
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.util.Assert
 
-import com.kerz.batch1.dao.PersonRepository
+import com.kerz.batch1.dao.PersonSqlRepository
 
 public class JobCompletionNotificationListener extends JobExecutionListenerSupport {
 
   static final Logger log = LoggerFactory.getLogger(JobCompletionNotificationListener)
 
   @Autowired
-  PersonRepository personRepository
+  PersonSqlRepository personRepository
   
   @Override
   void afterJob(JobExecution jobExecution) {
