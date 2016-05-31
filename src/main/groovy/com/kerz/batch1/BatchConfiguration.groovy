@@ -37,22 +37,8 @@ public class BatchConfiguration {
   @Autowired
   JobBuilderFactory jobBuilderFactory
 
-  //@Autowired
-//  @Resource
-//  @Qualifier(value='stepBuilderFactory')
-//  StepBuilderFactory stepBuilderFactory
-  
-//  @Resource
-//  @Qualifier(value='stepBuilderFactory1')
-//  StepBuilderFactory stepBuilderFactory
-  
   @Autowired
   PersonRepository personRepository
-  
-//  @Bean
-//  StepBuilderFactory stepBuilderFactory1() {
-//    new StepBuilderFactory()
-//  }
   
   @Autowired
   JobRepository jobRepository
@@ -65,7 +51,6 @@ public class BatchConfiguration {
     new OrientTransactionManager()
   }
   
-  //@Bean
   public StepBuilderFactory stepBuilderFactory() {
     transactionManager.g.autoStartTx = false
     new StepBuilderFactory(jobRepository, transactionManager)
